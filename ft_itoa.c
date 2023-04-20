@@ -6,7 +6,7 @@
 /*   By: phchirap <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 15:53:19 by phchirap          #+#    #+#             */
-/*   Updated: 2023/04/18 17:32:04 by phchirap         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:58:22 by phchirap         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,27 @@ int	ft_intlen(int n)
 	return (len);
 }
 
-int	ft_find_mult(int n)
+char	*ft_rev_int(int n)
 {
-	int	mult;
-	int	len;
+	char	*ret;
+	int		len;
+	int		i;
 
 	len = ft_intlen(n);
-	mult = 1;
-	while (len > 1)
+	i = 0;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	while (i < len)
 	{
-		mult *= 10;
-		len--;
+		ret[i] = n % 10 + '0';
+		n /= 10;
+		i++;
 	}
-	return (mult);
+	ret[i] = '\0';
+	return (ret);
 }
 
 char	*ft_itoa_process(char *result, int n, int i, int len)
 {
-	int	mult;
-
 	if (n == -2147483648)
 	{
 		while (i < len)
@@ -63,14 +65,14 @@ char	*ft_itoa_process(char *result, int n, int i, int len)
 		result[i] = '\0';
 		return (result);
 	}
-	mult = ft_find_mult(n);
-	while (i < len)
+	result[len] = '\0';
+	while (--len > 0)
 	{
-		result[i++] = n / mult + '0';
-		n %= mult;
-		mult = ft_find_mult(n);
+		result[len] = n % 10 + '0';
+		n /= 10;
 	}
-	result[i] = '\0';
+	if (result[len] != '-')
+		result[len] = n % 10 + '0';
 	return (result);
 }
 
